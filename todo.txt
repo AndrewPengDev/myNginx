@@ -1,0 +1,51 @@
+sudo yum clean all
+
+sudo rm -rf /var/cache/yum
+
+# Create a 2GB swap file
+sudo fallocate -l 2G /swapfile
+
+# Secure it
+sudo chmod 600 /swapfile
+
+# Set it up as swap
+sudo mkswap /swapfile
+sudo swapon /swapfile
+
+# Make it permanent
+echo '/swapfile swap swap defaults 0 0' | sudo tee -a /etc/fstab
+
+free -h
+
+sudo yum update -y
+sudo yum install -y yum-utils curl unzip firewalld
+
+
+// Install Docker
+
+# Set up the Docker repo
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+# Install Docker
+sudo yum install -y docker-ce docker-ce-cli containerd.io
+
+# Enable and start Docker
+sudo systemctl enable docker
+sudo systemctl start docker
+
+// Install docker compose
+
+mkdir -p ~/.docker/cli-plugins/
+curl -SL https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64 \
+  -o ~/.docker/cli-plugins/docker-compose
+chmod +x ~/.docker/cli-plugins/docker-compose
+
+# Optional: test installation
+docker compose version
+
+
+// allow traffic to pass through firewall if enabled (OPTIONAL)
+
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --reload

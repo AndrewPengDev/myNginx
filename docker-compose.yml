@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    image: my-nginx-image:latest
+    container_name: myNginx
+    volumes:
+      - /root/static_sites:/usr/share/nginx/html
+      - certs:/etc/letsencrypt
+      - certs-data:/var/lib/letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - shared-network
+    restart: always
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - certs:/etc/letsencrypt
+      - certs-data:/var/lib/letsencrypt
+      - /root/html:/usr/share/nginx/html  # Needed for webroot
+    entrypoint: "/bin/sh -c"
+    command: >
+      "certbot certonly --webroot 
+       --webroot-path=/usr/share/nginx/html 
+       --email andrewpeng125@gmail.com
+       --agree-tos 
+       --no-eff-email 
+       -d vincentpeng.com -d www.vincentpeng.com"
+    depends_on:
+      - app
+
+networks:
+  shared-network:
+    external: true
+
+volumes:
+  certs:
+  certs-data:
