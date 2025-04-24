@@ -21,16 +21,22 @@ services:
     volumes:
       - certs:/etc/letsencrypt
       - certs-data:/var/lib/letsencrypt
-      - /root/html:/usr/share/nginx/html  
-    command: >
-      certbot certonly --webroot 
-      --webroot-path=/usr/share/nginx/html 
-      --email andrewpeng125@gmail.com
-      --agree-tos 
-      --no-eff-email 
-      -d vincentpeng.com -d www.vincentpeng.com
+      - /root/static_sites:/usr/share/nginx/html    # ← make sure this matches where your files really live
+    entrypoint: ["certbot"]                          # ← optional, makes it explicit
+    command:
+      - certonly
+      - --webroot
+      - --webroot-path=/usr/share/nginx/html
+      - --email=andrewpeng125@gmail.com
+      - --agree-tos
+      - --no-eff-email
+      - -d
+      - vincentpeng.com
+      - -d
+      - www.vincentpeng.com
     depends_on:
       - app
+
 
 networks:
   shared-network:
