@@ -22,7 +22,6 @@ services:
       - certs:/etc/letsencrypt
       - certs-data:/var/lib/letsencrypt
       - /root/html:/usr/share/nginx/html  # Needed for webroot
-    entrypoint: "/bin/sh -c"
     command: >
       "certbot certonly --webroot 
        --webroot-path=/usr/share/nginx/html 
