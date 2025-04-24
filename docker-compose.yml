@@ -5,7 +5,7 @@ services:
     image: my-nginx-image:latest
     container_name: myNginx
     volumes:
-      - /root/static_sites:/usr/share/nginx/html
+      - /root/html:/usr/share/nginx/html
       - certs:/etc/letsencrypt
       - certs-data:/var/lib/letsencrypt
     ports:
@@ -21,7 +21,7 @@ services:
     volumes:
       - certs:/etc/letsencrypt
       - certs-data:/var/lib/letsencrypt
-      - /root/static_sites:/usr/share/nginx/html    # ← make sure this matches where your files really live
+      - /root/html:/usr/share/nginx/html    # ← make sure this matches where your files really live
     entrypoint: ["certbot"]                          # ← optional, makes it explicit
     command:
       - certonly
