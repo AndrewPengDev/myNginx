@@ -21,14 +21,14 @@ services:
     volumes:
       - certs:/etc/letsencrypt
       - certs-data:/var/lib/letsencrypt
-      - /root/html:/usr/share/nginx/html  # Needed for webroot
+      - /root/html:/usr/share/nginx/html  
     command: >
-      "certbot certonly --webroot 
-       --webroot-path=/usr/share/nginx/html 
-       --email andrewpeng125@gmail.com
-       --agree-tos 
-       --no-eff-email 
-       -d vincentpeng.com -d www.vincentpeng.com"
+      certbot certonly --webroot 
+      --webroot-path=/usr/share/nginx/html 
+      --email andrewpeng125@gmail.com
+      --agree-tos 
+      --no-eff-email 
+      -d vincentpeng.com -d www.vincentpeng.com
     depends_on:
       - app
 
